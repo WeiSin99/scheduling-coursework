@@ -1,24 +1,37 @@
 import json
 from functools import reduce
 
-def read_input():
-    """Reads the json file."""
-    with open('input.json') as f:
+def read_input(filename):
+    """Reads the json file and obtains the list of incidence matrices.
+    Args:
+        - filename (str): filepath
+    
+    Returns:
+        - data [type]: the incidence matrix
+    """
+    with open(filename) as f:
         data = json.load(f)
         data = data['workflow_0']['edge_set']
 
     return data
 
-def read_due_dates():
-    """Reads the json file."""
-    with open('input.json') as f:
+def read_due_dates(filename):
+    """Reads the json file and obtains the due dates.
+    Args:
+        - filename (str): filepath
+    
+    Returns:
+        - data [type]: the list of due dates
+    """
+
+    with open(filename) as f:
         data = json.load(f)
         data = data['workflow_0']['due_dates']
 
     return data
 
-def get_cmax(processing_times):
-    with open('input.json') as f:
+def get_cmax(filename, processing_times):
+    with open(filename) as f:
         data = json.load(f)
         data = data['workflow_0']['due_dates']
     jobs_without_index = [job.split('_')[0] for job in data.keys()]

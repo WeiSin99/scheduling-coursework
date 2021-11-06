@@ -18,6 +18,7 @@ class Node:
         self.nodes_before = nodes_before
         self.processing = processing
         self.due = due
+        self.n = 0
     
     def edge(self, to_node):
         """Creates the edge between two nodes (vertices) and adds them as part of the graph.
@@ -27,10 +28,10 @@ class Node:
         to_node.nodes_before.append(self)
 
     def __repr__(self):
-        return str({"name": self.name, "successor": self.successor})
+        return self.name
 
     def __str__(self):
-        return str({"name": self.name, "successor": self.successor})
-
-    def __dir__(self):
-        return {"name": self.name, "successor": self.successor}
+        return str({"name": self.name, "processing time": self.processing, "due date": self.due, \
+            "nodes before": [node.name for node in self.nodes_before], \
+            "successor": [node.name for node in self.successor], \
+            "n": self.n})

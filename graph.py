@@ -45,8 +45,8 @@ class Graph:
                 Node2 = self.graph_dict[to_node]
 
             # Link the two nodes
-            Node1.successor.append(Node2.name)
-            Node2.nodes_before.append(Node1.name)
+            Node1.successor.append(Node2)
+            Node2.nodes_before.append(Node1)
         
     def assign_due_dates(self, due_dates):
         """
@@ -71,6 +71,10 @@ class Graph:
             name_without_index = name.split('_')[0]
             node.processing = processing_time[name_without_index]
 
+    def assign_n(self):
+        for node in self.graph_dict.values():
+            node.n = len(node.successor)
+
     def no_of_successors(self):
         """Returns a dictionary of the number of successors n corresponding to a node
 
@@ -79,6 +83,6 @@ class Graph:
         """
         n = dict()
         for node in self.graph_dict.values():
-            n[node.name] = len(node.successor)
+            n[node] = len(node.successor)
 
         return n

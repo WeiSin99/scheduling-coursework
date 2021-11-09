@@ -68,7 +68,7 @@ def LCL(V, Cmax):
     
     return S, Tmax
 
-def Tabu(V, Cmax, initial_solution, threshold, K, L):
+def Tabu(initial_solution, threshold, K, L):
     """
     """
     tabu_list = []
@@ -125,10 +125,9 @@ def check_prec(schedule):
             return False
         else:
             for successor in node.successor:
-                print (successor.nodes_before)
                 if all(s_node in acceptable_list for s_node in successor.nodes_before):
-                    print('appended successor')
                     acceptable_list.append(successor)
+                    
 
     # if all the above conditions hold true, the schedule follows order of precednece.
     return True
@@ -152,7 +151,7 @@ def lexi_order_and_prec(schedule):
     remaining_swap_list = list()
     remaining_candidate_list = list()
 
-    for i in range(3):
+    for i in range(len(schedule)-1):
         candidate = copy.deepcopy(schedule)
         temp = candidate [i]
         candidate[i] = candidate[i+1]
@@ -160,7 +159,6 @@ def lexi_order_and_prec(schedule):
         
         # Append only if this schedule follows the order of precedence
         if check_prec(candidate):
-            print('passed check')
             # If the next job's job number is smaller than the current's, swap and save in the main list
             # This already follows lexicographical order
             if schedule[i].job_number > schedule[i+1].job_number:

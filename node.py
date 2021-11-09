@@ -14,11 +14,14 @@ class Node:
         - due (int): due date for the filter
         """
         self.name = name
+        self.job_number = None
         self.successor = successor
         self.nodes_before = nodes_before
         self.processing = processing
         self.due = due
         self.n = 0
+        self.end = False
+        self.start = False 
     
     def edge(self, to_node):
         """Creates the edge between two nodes (vertices) and adds them as part of the graph.
@@ -31,7 +34,8 @@ class Node:
         return self.name
 
     def __str__(self):
-        return str({"name": self.name, "processing time": self.processing, "due date": self.due, \
+        return str({"name": self.name, "job number": self.job_number, \
+            "processing time": self.processing, "due date": self.due, \
             "nodes before": [node.name for node in self.nodes_before], \
             "successor": [node.name for node in self.successor], \
-            "n": self.n})
+            "n": self.n, "end":self.end, "start":self.start})

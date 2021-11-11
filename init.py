@@ -28,6 +28,7 @@ V = deepcopy(node_dictionary)
 LCL_schedule, Tmax = LCL(V, Cmax)
 print('LCL Schedule: ', LCL_schedule)
 print('LCL Max Tardiness: ', Tmax)
+print()
 
 # Question 3 & 4 - Tabu Algorithm
 # Obtain initial schedule for sinit.json
@@ -35,31 +36,49 @@ init_schedule = read_init_schedule('sinit.json')
 jobs_in_init_order = [node_dictionary[job] for job in init_schedule]
 
 # # Run Tabu Search
-# # (i) K = 10
-# print('1. K=10')
-# solution, tabu_tardiness = Tabu(jobs_in_init_order, threshold=30, K=10, L=5)
-# print('Tabu Schedule: ', solution)
-# print('Tabu Total Tardiness: ', tabu_tardiness)
-# print()
-
-# (ii) K = 100
-print('1. K=100')
-solution, tabu_tardiness = Tabu(jobs_in_init_order, threshold=20, K=100, L=10)
-print('Tabu Schedule: ', solution)
-print('Tabu Total Tardiness: ', tabu_tardiness)
+# (i) K = 10
+print('1. K=10')
+solution_10, tabu_tardiness_10 = Tabu(jobs_in_init_order, threshold=30, K=10, L=5)
+print('Tabu Schedule: ', solution_10)
+print('Tabu Total Tardiness: ', tabu_tardiness_10)
 print()
 
-# # (iii) K = 1000
-# print('1. K=1000')
-# solution, tabu_tardiness = Tabu(jobs_in_init_order, threshold=30, K=1000, L=5)
-# print('Tabu Schedule: ', solution)
-# print('Tabu Total Tardiness: ', tabu_tardiness)
-# print()
+# (ii) K = 100
+print('2. K=100')
+solution_100, tabu_tardiness_100 = Tabu(jobs_in_init_order, threshold=30, K=100, L=5)
+print('Tabu Schedule: ', solution_100)
+print('Tabu Total Tardiness: ', tabu_tardiness_100)
+print()
 
-# # (iv) LCL Total Tardiness
-# print('4. LCL Total Tardiness: ',total_tardiness(LCL_schedule))
+# (iii) K = 1000
+print('3. K=1000')
+solution_1000, tabu_tardiness_1000 = Tabu(jobs_in_init_order, threshold=30, K=1000, L=5)
+print('Tabu Schedule: ', solution_1000)
+print('Tabu Total Tardiness: ', tabu_tardiness_1000)
+print()
 
-# test_schedule = ['onnx_8', 'onnx_7', 'muse_3', 'emboss_8', 'onnx_5', 'onnx_4', 'wave_5', 'emboss_6', 'emboss_5', 'wave_6']
-# test = [node_dictionary[job] for job in test_schedule]
-# _, swap_list = lexi_order_and_prec(test)
-# print(swap_list)
+# # (iv) Extra: Finding best Tabu Search Parameters for best schedule
+# # Initialise variables to store best parameters and performance outcome.
+# min_tardiness = float("inf")
+# threshold_best = None
+# L_best = None
+# schedule_best = None
+# i = 3
+# for i in range (30):
+#     for l in range (5,7):
+#         solution_1000, tabu_tardiness_1000 = Tabu(jobs_in_init_order, threshold=i, K=1000, L=l)
+#         if tabu_tardiness_1000 < min_tardiness:
+#             min_tardiness = tabu_tardiness_1000
+#             schedule_best = solution_1000
+#             threshold_best = i
+#             L_best = l
+
+# print (f'Parameter Optimisation for K = 1000: (i) Best Threshold = {threshold_best}, (ii) Best L = {L_best}') # Threshold = 3, L = 6
+# print ('Best Schedule: ', schedule_best) 
+# print ('Min tardiness: ', min_tardiness) # Min Tardiness = 2498.5
+
+# (v) LCL Total Tardiness
+print('5. LCL Total Tardiness: ',total_tardiness(LCL_schedule))
+
+
+

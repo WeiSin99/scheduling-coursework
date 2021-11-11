@@ -104,4 +104,4 @@ class Graph:
             if node.n == 0:
                 self.end_node = node
                 node.end = True
-                node.job_number = len(self.graph_dict)
+                node.job_number = len(self.graph_dict) -1

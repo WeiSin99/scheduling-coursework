@@ -71,10 +71,11 @@ def Tabu(initial_solution, threshold, K, L):
     accepted_solution = initial_solution
     best_solution = None
     for k in range(0,K):
-        print()
-        print(f'k={k}')
+        # print()
+        # print(f'k={k}')
         # all potential schedules that follows job's precedence in this iteration
         potential_schedule, swap_list = lexi_order_and_prec(accepted_solution)
+        # print(swap_list)
         for i, schedule in enumerate(potential_schedule):
             g_xk = total_tardiness(accepted_solution)
             g_y =  total_tardiness(schedule)
@@ -83,12 +84,15 @@ def Tabu(initial_solution, threshold, K, L):
             swap = swap_list[i]
             swap_reverse = (swap[1], swap[0])
             tabu = swap in tabu_list or swap_reverse in tabu_list
+            # print (f'checking current pair: {swap, swap_reverse}')
             if g_y < g_best:
                 # print(f'Better solution found! g_y = {g_y} < g_best = {g_best}')
                 # print('swap jobs', swap)
                 accepted_solution = schedule
                 best_solution = schedule
                 g_best = g_y
+                # print('best solution:')
+                # print(best_solution)
                 # add swap to the end of tabu list
                 if tabu:
                     # print('found in Tabu list. Moved pair to end of list')
@@ -102,8 +106,6 @@ def Tabu(initial_solution, threshold, K, L):
                     tabu_list.pop(0)
 
                 # print('Tabu List updated:', tabu_list)
-                # print('Best Schedule')
-                # print(accepted_solution)
 
                 break
 
@@ -121,6 +123,8 @@ def Tabu(initial_solution, threshold, K, L):
                 # print('Accepted Schedule')
                 # print(accepted_solution)
                 break
+                
+            # print('swap not accepted')
 
     return best_solution, g_best
 
@@ -129,21 +133,22 @@ def check_prec(schedule):
     # Check start node
     if not schedule[0].start:
         return False
-    
+
+    # Check intermediate nodes.
+    # Keep track of jobs that have been executed. Dictates the subsequent allowable jobs.
+    executed_list = [schedule[0]]
+    for node in schedule[1:-1]:
+        # if node not even in acceptable list, reject
+        if all(before in executed_list for before in node.nodes_before):
+            executed_list.append(node)
+        else:
+            return False
+
+    # Check end node
     if not schedule[-1].end:
         return False
 
-    # Initialise the acceptable list (i.e what can come after the first node)
-    acceptable_list = copy.copy(schedule[0].successor)
-    for node in schedule[1:-1]:
-        if node not in acceptable_list:
-            return False
-        else:
-            for successor in node.successor:
-                if all(s_node in acceptable_list for s_node in successor.nodes_before):
-                    acceptable_list.append(successor)
-
-    # if all the above conditions hold true, the schedule follows order of precednece.
+    # If all the above conditions hold true, the schedule follows order of precednece.
     return True
 
 def lexi_order_and_prec(schedule):
@@ -175,7 +180,7 @@ def lexi_order_and_prec(schedule):
     
     # For the remaining candidates whose next job's job number was larger than its own, 
     if remaining_candidate_list != []:
-        # Lexicographical order follows the reverse of the remaining_candidate_list
+        # Lexicographical order follows the reverse for the remaining_candidate_list
         remaining_candidate_list.reverse()
         remaining_swap_list.reverse()
 

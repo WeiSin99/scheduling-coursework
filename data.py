@@ -38,3 +38,10 @@ def get_cmax(filename, processing_times):
     cmax = reduce(lambda p,job: p + processing_times[job], jobs_without_index, 0)
 
     return cmax
+
+def read_init_schedule(filename):
+    with open(filename) as f:
+        data = json.load(f)
+        data = data['workflow_0']
+
+    return data

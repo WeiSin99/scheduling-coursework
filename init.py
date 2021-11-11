@@ -1,7 +1,8 @@
 from graph import Graph
-from data import read_due_dates, read_input, get_cmax
-from algorithm import LCL, lexi_order_and_prec, Tabu, total_tardiness
+from data import read_due_dates, read_input, get_cmax, read_init_schedule
+from algorithm import LCL, lexi_order_and_prec, Tabu, total_tardiness, check_prec
 from pprint import pprint
+from copy import deepcopy
 
 # Question 1 - Job Processing Times
 # Values taken from running gettimes.py
@@ -20,18 +21,45 @@ graph = Graph()
 graph.build_graph(incidence_list)
 graph.assign_due_dates(due_dates)
 graph.assign_processing_time(p)
-V = graph.graph_dict
+node_dictionary = graph.graph_dict
 
-# Get the schedule following Least Cost Last Algorithm
-S, Tmax = LCL(V, Cmax)
-print(Tmax)
-print(S)
+# Least Cost Last Algorithm Schedule
+V = deepcopy(node_dictionary)
+LCL_schedule, Tmax = LCL(V, Cmax)
+print('LCL Schedule: ', LCL_schedule)
+print('LCL Max Tardiness: ', Tmax)
 
-candidate_list, swap_list = lexi_order_and_prec(S)
-print(swap_list)
+# Question 3 & 4 - Tabu Algorithm
+# Obtain initial schedule for sinit.json
+init_schedule = read_init_schedule('sinit.json')
+jobs_in_init_order = [node_dictionary[job] for job in init_schedule]
 
-# Question 3 - Tabu Algorithm
-Solution, TT = Tabu(S, 20, 5, 3)
-print(Solution)
-print('Tabu', TT)
-print('LCL',total_tardiness(S))
+# # Run Tabu Search
+# # (i) K = 10
+# print('1. K=10')
+# solution, tabu_tardiness = Tabu(jobs_in_init_order, threshold=30, K=10, L=5)
+# print('Tabu Schedule: ', solution)
+# print('Tabu Total Tardiness: ', tabu_tardiness)
+# print()
+
+# (ii) K = 100
+print('1. K=100')
+solution, tabu_tardiness = Tabu(jobs_in_init_order, threshold=20, K=100, L=10)
+print('Tabu Schedule: ', solution)
+print('Tabu Total Tardiness: ', tabu_tardiness)
+print()
+
+# # (iii) K = 1000
+# print('1. K=1000')
+# solution, tabu_tardiness = Tabu(jobs_in_init_order, threshold=30, K=1000, L=5)
+# print('Tabu Schedule: ', solution)
+# print('Tabu Total Tardiness: ', tabu_tardiness)
+# print()
+
+# # (iv) LCL Total Tardiness
+# print('4. LCL Total Tardiness: ',total_tardiness(LCL_schedule))
+
+# test_schedule = ['onnx_8', 'onnx_7', 'muse_3', 'emboss_8', 'onnx_5', 'onnx_4', 'wave_5', 'emboss_6', 'emboss_5', 'wave_6']
+# test = [node_dictionary[job] for job in test_schedule]
+# _, swap_list = lexi_order_and_prec(test)
+# print(swap_list)

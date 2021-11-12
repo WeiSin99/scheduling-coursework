@@ -1,34 +1,30 @@
 """
-The Node object implementation.
+The Node object implementation. Nodes are used to represent jobs in the workflow. 
+These are implemented in graph.py to build the Directed Acrylic Graph (DAG).
 """
-
-
 class Node:
 
     def __init__(self, name, successor, nodes_before, processing, due):
-        """Initialisation of TreeNode object parameters.
-        - name (str): eg. onnx_1, muse_1, emboss_1 etc.
-        - value (int): node number (EG. 0 for Node 0, according to the incidence matrix)
-        - nodes_after (list): a list of nodes containing the element's immediate successors.
-        - processing (float): processing time for the filter
-        - due (int): due date for the filter
+        """Initialisation of Node object parameters.
+        - name (str): eg. onnx_1, muse_1, emboss_1 etc
+        - job number (int): node number following python-like format (appendix A.1)
+        - successor (list): a list of the current node's immediate successors (node objects)
+        - n (int): the number of immediate successors the current node has = len(successor)
+        - nodes_before (list): a list of the current node's immediate predecessors (node objects)
+        - processing (float): processing time for the current node
+        - due (int): due date for the current node
+        - end (bool): true if the current node is the end node in the DAG.
+        - start (bool): true if the current node is the start node in the DAG.
         """
         self.name = name
         self.job_number = None
         self.successor = successor
+        self.n = 0
         self.nodes_before = nodes_before
         self.processing = processing
         self.due = due
-        self.n = 0
         self.end = False
         self.start = False 
-    
-    def edge(self, to_node):
-        """Creates the edge between two nodes (vertices) and adds them as part of the graph.
-        Args:
-            to_node(Node): the end node for the edge"""
-        self.nodes_after.append(to_node.name)
-        to_node.nodes_before.append(self)
 
     def __repr__(self):
         return self.name

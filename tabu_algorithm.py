@@ -1,81 +1,40 @@
+"""
+Consists of the main implementation of the Tabu Search algorithm and some other helper functions.
+"""
+
 import copy
-
-def LCL(V, Cmax):
-    """
-    Function returns the a schedule following the Least Cost Last (LCL) Rule.
-    
-    Args: 
-    (i) V (dict)
-        - key: node name (str), 
-        - value: the node object (Node)
-    (ii) Cmax (float)
-        - the maximum completion time in the schedule (i.e. sum of all processing times in the system)
-
-    Returns: 
-    (i) S (list): the schedule assigned following LCL rule
-        - Each element in S is the name (str) of the job.
-    (ii) Tmax (float): the maximum tardiness
-    """
-    # Initialise
-    # Create an empty schedule
-    S = [0]*(len(V)) 
-    # Total processing times of all jobs already in the schedule S
-    p_assigned = 0 
-    # Keep track of Tmax
-    Tmax = 0
-    for k in range(len(V)-1,-1,-1):
-        # print (f'For k = {k}, jobs with n = 0:')
-        # At each iteration, 
-        Tj_min_node = None # Used to store node with minimum tardiness
-        Tj_min = Cmax # Used to track the minimum tardiness
-        for node in V.values():
-            # Find the node that has no immediate successors (nj = 0)
-            if node.n == 0:
-                # Calculate Tardiness
-                Cj = Cmax - p_assigned
-                Tj = max(0, Cj - node.due)
-
-                # print(f'Job: {node.name}, Tj: {Tj}')
-
-                # Find the node that yields the minimum tardiness
-                if Tj<Tj_min:
-                    Tj_min = Tj
-                    Tj_min_node = node
-        
-        # Add the node with the minimum tardiness as the kth job
-        S[k] = Tj_min_node
-        if Tj_min > Tmax:
-            Tmax = Tj_min
-        # print(f'Minimum Tardiness Job Selected: {Tj_min_node.name} with Tj: {Tj_min}')
-        # print ('Schedule S = ', S)
-        # print()
-
-        # Sum up its processing time for the next k
-        p_assigned += Tj_min_node.processing
-
-        # For all jobs that have Tj_min_node as its immediate successor
-        for successor in Tj_min_node.nodes_before:
-            # Reduce their n value
-            V[successor.name].n -= 1
-        
-        # Remove Tj_min_node from n
-        del V[Tj_min_node.name]
-    
-    return S, Tmax
 
 def Tabu(initial_solution, threshold, K, L):
     """
+    Obtains a schedule that minimises the total tardiness based on the tabu Search algorithm.
+
+    Args:
+    (i) initial_solution (list)
+        - The initial schedule candidate. A list of node objects representing jobs in the schedule.
+    (ii) threshold (int)
+        - The upper bound for a worse solution to be accepted
+    (iii) K (int)
+        - The number of iteration to be run
+    (iv) L (int)
+        - The maximum length of tabu list
+
+    Returns:
+    (i) best_solution (list): the best schedule that minimises the total tardiness
+        - Each element is a node object (Node)
+    (ii) g_best (float): the total tardiness obtained from best_solution
     """
+    # Initialise
     tabu_list = []
     g_best = float("inf")
     accepted_solution = initial_solution
     best_solution = None
+    # Iterate K times
     for k in range(0,K):
         # print()
         # print(f'k={k}')
-        # all potential schedules that follows job's precedence in this iteration
+        # Obtain all potential candidates that follows job's precedence for this iteration
         potential_schedule, swap_list = lexi_order_and_prec(accepted_solution)
-        # print(swap_list)
+        # For each of these candidates (schedule)
         for i, schedule in enumerate(potential_schedule):
             g_xk = total_tardiness(accepted_solution)
             g_y =  total_tardiness(schedule)
@@ -85,23 +44,27 @@ def Tabu(initial_solution, threshold, K, L):
             swap_reverse = (swap[1], swap[0])
             tabu = swap in tabu_list or swap_reverse in tabu_list
             # print (f'checking current pair: {swap, swap_reverse}')
+            # If schedule has the best cost
             if g_y < g_best:
-                # print(f'Better solution found! g_y = {g_y} < g_best = {g_best}')
-                # print('swap jobs', swap)
+                # Accept the solution and replace it as the best solution
                 accepted_solution = schedule
                 best_solution = schedule
                 g_best = g_y
-                # print('best solution:')
-                # print(best_solution)
-                # add swap to the end of tabu list
+                # print(f'Better solution found. g_y = {g_y} < g_best = {g_best}')
+                # print('swap jobs', swap)
+                # print('best schedule: ', best solution)
+
+                # If it is in the tabu list
                 if tabu:
-                    # print('found in Tabu list. Moved pair to end of list')
+                    # Remove the pair, and
                     try:
                         tabu_list.remove(swap)
                     except ValueError:
                         tabu_list.remove(swap_reverse)
+                # Append the pair to the end of the tabu list (as though it just arrived)
                 tabu_list.append(swap)
 
+                # If tabu_list size L has been exceeded, pop the node at the start of the list
                 if len(tabu_list) > L:
                     tabu_list.pop(0)
 
@@ -109,21 +72,24 @@ def Tabu(initial_solution, threshold, K, L):
 
                 break
 
+            # If schedule cost is within threshold
             elif (delta > -threshold and not tabu):
+                # Accept the solution, and
+                accepted_solution = schedule
+                # Update tabu list
+                tabu_list.append(swap)
+
+                # If tabu_list size L has been exceeded, pop the node at the start of the list
+                if len(tabu_list) > L:
+                    tabu_list.pop(0)
+
                 # print(f'Solution within threshold found. Accept Solution. g_y = {g_y}, g_x = {g_xk}, delta = {delta} < threshold (={threshold})')
                 # print('swap jobs', swap)
-                accepted_solution = schedule
-                # update tabu list
-                tabu_list.append(swap)
-
-                if len(tabu_list) > L:
-                    tabu_list.pop(0)
-
                 # print('Tabu List updated:', tabu_list)
-                # print('Accepted Schedule')
-                # print(accepted_solution)
+                # print('Accepted Schedule', accepted_solution)
                 break
-                
+
+            # Otherwise, job not accepted.  
             # print('swap not accepted')
 
     return best_solution, g_best
@@ -198,19 +164,5 @@ def total_tardiness(schedule):
         Cj += job.processing
         Tj = max(0, job.due - Cj)
         Tardiness += Tj
-    
+
     return Tardiness
-
-def total_completion_time(schedule):
-    """ Computes the total completion time for a given schedule."""
-    Cj = 0
-    sum_Cj = 0
-    for job in schedule:
-        Cj += job.processing
-        sum_Cj += Cj
-    
-    return sum_Cj
-    
-
-    
-

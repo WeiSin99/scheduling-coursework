@@ -1,13 +1,17 @@
+"""
+Consists of all methods relating to processing data to/from .csv and/or .json files.
+"""
+
 import json
-from functools import reduce
+import csv
 
 def read_input(filename):
-    """Reads the json file and obtains the list of incidence matrices.
+    """Read incidence matrices from data/input.json.
     Args:
-        - filename (str): filepath
+        - filename (str): filepath to file containing the incidence matrices.
     
     Returns:
-        - data [type]: the incidence matrix
+        - data (list): a list with each element being a list of incidence pairs [from_job name (str), to_job name (str)].
     """
     with open(filename) as f:
         data = json.load(f)
@@ -16,12 +20,12 @@ def read_input(filename):
     return data
 
 def read_due_dates(filename):
-    """Reads the json file and obtains the due dates.
+    """Read due dates from data/input.json.
     Args:
-        - filename (str): filepath
+        - filename (str): filepath to file containing the due date.
     
     Returns:
-        - data [type]: the list of due dates
+        - data (dict): the dictionary of due dates with key = job name (str), value = due date (int)
     """
 
     with open(filename) as f:
@@ -30,18 +34,30 @@ def read_due_dates(filename):
 
     return data
 
-def get_cmax(filename, processing_times):
-    with open(filename) as f:
-        data = json.load(f)
-        data = data['workflow_0']['due_dates']
-    jobs_without_index = [job.split('_')[0] for job in data.keys()]
-    cmax = reduce(lambda p,job: p + processing_times[job], jobs_without_index, 0)
-
-    return cmax
-
 def read_init_schedule(filename):
+    """Read the initial schedule from data/tabu/sinit.json.
+    Args:
+        - filename (str): filepath to file containing the initial schedule.
+    
+    Returns:
+        - data (list): a list of job names (str) listed according to the schedule.
+    """
     with open(filename) as f:
         data = json.load(f)
         data = data['workflow_0']
 
     return data
+
+def write_schedule_to_csv(filename, schedule):
+    """Convert schedules to csv format for processing.
+    Args:
+        - filename (str): filepath to save the converted .csv schedule.
+        - schedule (list): a list of jobs (node object) listed according to the schedule.
+    
+    """
+
+    job_numbers = [job.job_number for job in schedule]
+
+    with open(filename, 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(job_numbers)

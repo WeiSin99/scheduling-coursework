@@ -1,7 +1,5 @@
 """
-The Decision Tree module contains any method required to
-develop this Machine Learning model in a eager, supervised
-learning fashion.
+The Graph module contains methods required to build a Directed Acrylic Graph that describes the workflow.
 """
 from node import Node
 
@@ -9,20 +7,22 @@ from node import Node
 class Graph:
 
     def __init__(self):
-        """Initialisation of Graph class object parameters.
-        graph_dict (dict): dictionary with key = node.name (str) and value = node (object).
         """
-        self.graph_dict = {} # all nodes in the graph
-        self.start_node = None
-        self.end_node = None
+        Initialisation of Graph class object parameters.
+        - graph_dict (dict): dictionary to all nodes within the graph, with:
+            key = node.name (str),
+            value = node (object)
+        """
+        self.graph_dict = {} 
 
     def build_graph(self,incidence_list):
-        """Takes the incidence matrix and builds the DAG.
+        """
+        Takes an incidence matrix and builds the DAG.
         
         Args:
-            incidence_list: 
-            - a list of len(n), where n = number of edges
-            - each element: a list of [from_node's name (str), to_node's name (str)]
+            incidence_list (list):
+            - len(n), where n = number of edges
+            - each element: a list of incidence pairs [from_node's name (str), to_node's name (str)]
         """
         for index,pair in enumerate(incidence_list):
             from_node = pair[0]
@@ -50,58 +50,54 @@ class Graph:
             Node1.successor.append(Node2)
             Node2.nodes_before.append(Node1)
         
-        self.no_of_successors()
+        # Assign node.n - the number of successors each node has.
         self.assign_n()
+        # Identify the start and end nodes in the graph.
         self.find_start_end()
         
     def assign_due_dates(self, due_dates):
         """
-        Assign due dates to each node in the graph
+        Assign due dates to each node object in the graph. 
+        Obtained via node.due (int).
 
-        Args:
-            due_dates:
-            - a dictionary with key value pair of { indexed_job_name: due_date }
+        Args: 
+            due_dates (dict): a dictionary of due dates with key = job name (str), value = due date (int).
         """
         for name, node in self.graph_dict.items():
             node.due = due_dates[name]
     
     def assign_processing_time(self,processing_time):
         """
-        Assign processing time to each node in the graph
+        Assign processing time to each node object in the graph.
+        Obtained via node.processing (float).
 
         Args:
-            processing_time:
-            - a dictionary with key value pair of { job_name: processing_time }
+            processing_time (dict): a dictionary of processing times with key = job name (str), value = processing_time (float).
         """
         for name, node in self.graph_dict.items():
             name_without_index = name.split('_')[0]
             node.processing = processing_time[name_without_index]
 
     def assign_n(self):
+        """
+        Assign the number of successors belonging to a particular node to each node object (node.n). 
+        Obtained via node.n (int).
+        EG. if a node has 3 successors, n = 3.
+        """
         for node in self.graph_dict.values():
             node.n = len(node.successor)
             if node.n == 0:
                 node.end = True
 
-    def no_of_successors(self):
-        """Returns a dictionary of the number of successors n corresponding to a node
-
-        Returns:
-            n(dict): key = node name ; value = number of successors corresponding to the node
-        """
-        n = dict()
-        for node in self.graph_dict.values():
-            n[node] = len(node.successor)
-
-        return n
-
     def find_start_end(self):
+        """
+        Identify and assign the start and end nodes of the graph.
+        """
         for node in self.graph_dict.values():
             if node.nodes_before == []:
-                self.start_node = node
                 node.start = True
 
             if node.n == 0:
-                self.end_node = node
                 node.end = True
                 node.job_number = len(self.graph_dict) -1
+

@@ -11,7 +11,7 @@ Consists of two main parts:
   Consists of the main implementation of tabu search algorithm and some other helper functions
   1. Tabu - Implementation of tabu search algorithm
   2. check_prec - Checks if a given schedule is acceptable following the order of precedence
-  3. lexi_order_and_prec - Returns the possible schedule candidates sorted in lexicographical order (according to their job numbers)
+  3. lexi_order_and_prec - Returns the possible schedule candidates for tabu search sorted in lexicographical order (according to their job numbers)
   4. total_tardiness - Computes the total tardiness for a given schedule.
 
 2. tabu_init.py

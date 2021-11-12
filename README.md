@@ -1,5 +1,5 @@
 # Image Processing Workflow - Introduction
-Serverless workflows are workflows where jobs are serverless function calls. A serverless function is a type software service that runs in the cloud and which are increasingly used, for example, in batch processing of images, videos and data. A scheduling problem arises when functions execute together hosted inside the same environment (e.g., a virtual machine) and we want to sequence their executions in order to optimize some performance metrics, such as minimizing the maximum lateness. 
+Serverless workflows jobs are serverless function calls. A serverless function is a type software service that runs in the cloud and which are increasingly used, for example, in batch processing of images, videos and data. A scheduling problem arises when functions execute together hosted inside the same environment (e.g., a virtual machine) and we want to sequence their executions in order to optimize some performance metrics, such as minimizing the maximum lateness. 
 
 For this coursework, the functions considered perform image processing (eg. filters that mix the content of an image with the style of another image). The inputs and outputs of the filters create precedences in their executions that can be described by means of a directed acyclic graph (DAG), which captures the workflow characteristics. 
 
@@ -34,6 +34,7 @@ scheduling-coursework
 ├── README.md
 ├── tabu_algorithm.py
 └── tabu_init.py
+`````
 
 The project's codebase consists of:
 1. data.py

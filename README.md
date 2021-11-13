@@ -37,26 +37,26 @@ scheduling-coursework
 `````
 
 The project's codebase consists of:
-1. data.py <\br>
+1. data.py <br>
     Consists of all methods relating to processing data to/from .csv and/or .json files.
     1. Read incidence matrices from data/input.json.
     2. Read due dates from data/input.json.
     3. Read the initial schedule from data/tabu/sinit.json.
     4. Convert schedules to csv format for processing.
 
-2. node.py<\br>
+2. node.py<br>
     The Node object implementation. Nodes are used to represent jobs in the workflow. 
     These are implemented in graph.py to build the Directed Acrylic Graph (DAG).
 
-3. graph.py<\br>
+3. graph.py<br>
     The Graph module contains methods required to build a Directed Acrylic Graph that describes the workflow.
     1. Takes an incidence matrix and builds the DAG. 
     2. Methods to assign node attributes for nodes with the Graph (eg. processing times, due dates, number of successors, identifying start and end nodes).
 
-4. lcl_algorithm.py and lcl_init.py<\br>
+4. lcl_algorithm.py and lcl_init.py<br>
     Please refer to README_lcl.txt for more information.
 
-5. tabu_algorithm.py and tabu_init.py<\br>
+5. tabu_algorithm.py and tabu_init.py<br>
     Please refer to README_tabu.txt for more information.
 
 For more details on each method, please refer to their respective docstrings found in each file.

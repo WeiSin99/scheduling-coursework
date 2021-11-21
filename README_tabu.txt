@@ -4,6 +4,7 @@ Run the following command to execute the code:
 
 1. cd into the project directory with: `cd scheduling-coursework`
 2. Run the tabu search algorithm with the following commands: `python3 tabu_init.py`
+3. To see intermediate results printed in the terminal, uncomment the print statements in the Tabu() method in tabu_algorithm.py.
 
 Consists of two main parts:
 
@@ -20,3 +21,4 @@ Consists of two main parts:
   2. Set L = 5 and threshold = 30
   3. Set the initial solution to be the schedule given in data/sinit.json which is based on topological order
   4. Run the tabu search algorithm for K = 10, 100, and 1000 to obtain solutions that minimize the total tardiness
+  5. EXTRA: Hyperparameter tuning to identify more optimal parameters (threshold and tabu list length(L)) and a better schedule.

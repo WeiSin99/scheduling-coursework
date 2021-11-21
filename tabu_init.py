@@ -53,8 +53,12 @@ print('Tabu Total Tardiness: ', tabu_tardiness_1000)
 write_schedule_to_csv('data/tabu/tabu_1000.csv', solution_1000)
 print()
 
-# # (iv) Extra: Hyperparameter tuning to identify best Tabu Search parameters.
-# # For computational efficiency, K=100 used.
+"""
+(iv) Extra: Hyperparameter tuning to identify best Tabu Search parameters.
+        - For K = 1000, Best Parameters found were: Threshold = 13, L = 9.
+        - Obtained Min Tardiness = 2182.1186
+        Uncomment section below. However do note the programme takes awhile to complete execution.
+"""
 # print('4. Running hyperparameter tuning')
 # # Initialise variables to store best parameters and performance outcome.
 # min_tardiness = float("inf")
@@ -73,7 +77,7 @@ print()
 #             L_best = l
 #             print(f'New best parameter found: (i) Best Threshold = {threshold_best}, (ii) Best L = {L_best}')
 
-# print (f'Parameter Optimisation: (i) Best Threshold = {threshold_best}, (ii) Best L = {L_best}') # for K = 1000, Best Parameters: Threshold = 13, L = 9
+# print (f'Parameter Optimisation: (i) Best Threshold = {threshold_best}, (ii) Best L = {L_best}') 
 # print ('Best Schedule: ', schedule_best) 
-# print ('Min tardiness: ', min_tardiness) # Min Tardiness = 2182.1186
+# print ('Min tardiness: ', min_tardiness) 
 # print()

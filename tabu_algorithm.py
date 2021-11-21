@@ -6,11 +6,12 @@ import copy
 
 def Tabu(initial_solution, threshold, K, L):
     """
-    Obtains a schedule that minimises the total tardiness based on the tabu Search algorithm.
+    Obtains a schedule that minimises the total tardiness based on the Tabu Search algorithm.
+    Uncomment print statements to see intermediate results.
 
     Args:
     (i) initial_solution (list)
-        - The initial schedule candidate. A list of node objects representing jobs in the schedule.
+        - The initial schedule candidate at k=0. A list of node objects representing jobs in the schedule.
     (ii) threshold (int)
         - The upper bound for a worse solution to be accepted
     (iii) K (int)
@@ -38,7 +39,6 @@ def Tabu(initial_solution, threshold, K, L):
             g_xk = total_tardiness(accepted_solution)
             g_y =  total_tardiness(schedule)
             delta = g_xk - g_y
-
             swap = swap_list[i]
             swap_reverse = (swap[1], swap[0])
             tabu = swap in tabu_list or swap_reverse in tabu_list

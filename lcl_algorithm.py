@@ -9,6 +9,7 @@ from functools import reduce
 def LCL(V, Cmax):
     """
     Function returns the schedule following the Least Cost Last (LCL) Rule.
+    Uncomment the print statements to see intermediate results printed in the terminal.
     
     Args: 
     (i) V (dict)

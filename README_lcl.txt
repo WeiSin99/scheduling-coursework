@@ -2,8 +2,9 @@ Code Execution Instructions
 
 Run the following command to execute the code:
 
-1. cd into the project directory with: `cd scheduling-coursework`
-2. Run the tabu search algorithm with the following commands: `python3 lcl_init.py`
+1. cd into the project directory with: `cd scheduling-coursework`.
+2. Run the tabu search algorithm with the following commands: `python3 lcl_init.py`.
+3. To see intermediate results printed in the terminal, uncomment the print statements in the LCL() method in lcl_algorithm.py.
 
 Consists of two main parts:
 

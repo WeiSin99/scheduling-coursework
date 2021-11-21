@@ -18,11 +18,11 @@ class Node:
         """
         self.name = name
         self.job_number = None
-        self.successor = successor
-        self.n = 0
-        self.nodes_before = nodes_before
         self.processing = processing
         self.due = due
+        self.nodes_before = nodes_before
+        self.successor = successor
+        self.n = 0
         self.end = False
         self.start = False 
 

@@ -14,8 +14,6 @@ incidence_list = read_input('data/input.json')
 # (ii) Due Dates
 due_dates = read_due_dates('data/input.json')
 
-source_file = open('lcl_log.txt', 'w')
-
 # Build the DAG
 graph = Graph()
 graph.build_graph(incidence_list)
@@ -27,12 +25,10 @@ node_dictionary = graph.graph_dict
 V = deepcopy(node_dictionary)
 LCL_schedule, Tmax = LCL(V, Cmax)
 # LCL Schedule
-print('LCL Schedule: ', LCL_schedule, file = source_file)
+print('LCL Schedule: ', LCL_schedule)
 # Convert to csv
 write_schedule_to_csv('data/lcl/lcl.csv', LCL_schedule)
 # Max Tardiness
-print('LCL Max Tardiness: ', Tmax, file = source_file)
+print('LCL Max Tardiness: ', Tmax)
 # LCL Total Tardiness
-print('LCL Total Tardiness: ',total_tardiness(LCL_schedule), file = source_file)
-
-source_file.close()
+print('LCL Total Tardiness: ',total_tardiness(LCL_schedule))

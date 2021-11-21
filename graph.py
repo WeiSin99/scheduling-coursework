@@ -15,9 +15,9 @@ class Graph:
         """
         self.graph_dict = {} 
 
-    def build_graph(self,incidence_list):
+    def build_graph(self, incidence_list):
         """
-        Takes an incidence matrix and builds the DAG.
+        Takes a list of incidence matrices and builds the DAG.
         
         Args:
             incidence_list (list):
@@ -61,7 +61,9 @@ class Graph:
         Obtained via node.due (int).
 
         Args: 
-            due_dates (dict): a dictionary of due dates with key = job name (str), value = due date (int).
+            due_dates (dict): a dictionary of due dates with 
+                key = job name (str)
+                value = due date (int)
         """
         for name, node in self.graph_dict.items():
             node.due = due_dates[name]
@@ -72,7 +74,9 @@ class Graph:
         Obtained via node.processing (float).
 
         Args:
-            processing_time (dict): a dictionary of processing times with key = job name (str), value = processing_time (float).
+            processing_time (dict): a dictionary of processing times with 
+                key = job name (str)
+                value = processing_time (float)
         """
         for name, node in self.graph_dict.items():
             name_without_index = name.split('_')[0]

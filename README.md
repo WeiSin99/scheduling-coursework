@@ -1,9 +1,9 @@
 # Image Processing Workflow - Introduction
-Serverless workflow jobs are serverless function calls - a type of software service that runs in the cloud. These are increasingly used, for example, in batch processing of images, videos and data. A scheduling problem arises when functions execute together while being hosted inside the same environment (e.g., a virtual machine) and we want to sequence their executions in order to optimize some performance metrics, such as minimizing the maximum lateness. 
+Serverless workflow jobs are serverless function calls - a type of software service that runs in the cloud. These are increasingly used, for example, in batch processing of images, videos and data. A scheduling problem arises when functions execute together while being hosted inside the same environment (e.g., a virtual machine) and we want to sequence their executions in order to optimize some performance metrics, such as minimizing the maximum lateness. For this coursework, the functions considered perform image processing (eg. filters that mix the content of an image with the style of another image). 
 
-For this coursework, the functions considered perform image processing (eg. filters that mix the content of an image with the style of another image). The inputs and outputs of the filters create precedences in their executions that can be described by means of a directed acyclic graph (DAG), which captures the workflow characteristics. 
+<img src="https://github.com/WeiSin99/scheduling-coursework/blob/main/sample.jpg" width="600">
 
-The aims of this project is to obtain an optimal algorithm for minimising tardiness subject to precendences on a single machine. These include the use of the (i) Least Cost Last Algorithm and (ii) Tabu Search Algorithm.
+The inputs and outputs of the filters create precedences in their executions that can be described by means of a directed acyclic graph (DAG), which captures the workflow characteristics. The aims of this project is to obtain an optimal algorithm for minimising tardiness subject to precendences on a single machine. These include the use of the (i) Least Cost Last Algorithm and (ii) Tabu Search Algorithm. The report can be found in answer.pdf.
 
 ## Project layout
 Structure of repository:

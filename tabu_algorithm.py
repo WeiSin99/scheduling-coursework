@@ -30,7 +30,7 @@ def Tabu(initial_solution, threshold, K, L):
     accepted_solution = initial_solution
     best_solution = None
     # Iterate K times
-    for k in range(0,K):
+    for k in range(1,K+1):
         # print(f'k={k}')
         # Obtain all potential candidates that follows job's precedence for this iteration
         potential_schedule, swap_list = lexi_order_and_prec(accepted_solution)
@@ -42,15 +42,16 @@ def Tabu(initial_solution, threshold, K, L):
             swap = swap_list[i]
             swap_reverse = (swap[1], swap[0])
             tabu = swap in tabu_list or swap_reverse in tabu_list
-            # print (f'checking current pair: {swap, swap_reverse}')
             # If schedule has the best cost
             if g_y < g_best:
+                # print('Tabu List:', tabu_list)
+                # print(f'Better solution found. g_y = {g_y} < g_best = {g_best}')
+                # print('swap jobs', swap)
+
                 # Accept the solution and replace it as the best solution
                 accepted_solution = schedule
                 best_solution = schedule
                 g_best = g_y
-                # print(f'Better solution found. g_y = {g_y} < g_best = {g_best}')
-                # print('swap jobs', swap)
 
                 # Even if it is in the tabu list, allow swap (aspiration criteria)
                 if tabu:
@@ -153,18 +154,18 @@ def lexi_order_and_prec(schedule):
         
         # Check if this schedule follows the order of precedence.
         if check_prec(candidate):
-            # If the next job's job number is smaller than the current's, swap and save in the main list
+            # If the next job's job number is smaller than the current's (eg: (5, 2)), swap and save in the main list
             # This already follows lexicographical order
             if schedule[i].job_number > schedule[i+1].job_number:
                 candidate_list.append(candidate)
                 swap_list.append((schedule[i].job_number, schedule[i+1].job_number))
         
-            # Otherwise, save it separately in remaining_candidate_list
+            # Otherwise, save it aside in remaining_candidate_list 
             else:
                 remaining_swap_list.append((schedule[i].job_number, schedule[i+1].job_number))
                 remaining_candidate_list.append(candidate)
     
-    # For the remaining candidates whose next job's job number was larger than its own, 
+    # For the remaining candidates whose next job's job number was larger than its own (eg: (2,5)), 
     if remaining_candidate_list != []:
         # Lexicographical order follows the reverse for the remaining_candidate_list
         remaining_candidate_list.reverse()

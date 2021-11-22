@@ -21,7 +21,9 @@ scheduling-coursework
 │   ├── tabu_100.csv
 │   ├── tabu_100.json
 │   ├── tabu_1000.csv
-│   └── tabu_1000.json
+│   ├── tabu_1000.json
+│   ├── tabu_optimal.csv
+│   └── tabu_optimal.json
 │ └── input.json
 ├── convert.py
 ├── data.py
@@ -38,7 +40,7 @@ scheduling-coursework
 
 The project's codebase consists of:
 1. data.py <br>
-    Consists of all methods relating to processing data to/from .csv and/or .json files.
+    All methods relating to processing data to/from .csv and/or .json files.
     1. Read incidence matrices from data/input.json.
     2. Read due dates from data/input.json.
     3. Read the initial schedule from data/tabu/sinit.json.
